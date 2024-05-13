@@ -13,7 +13,7 @@ def validacion(mensaje, tipo_dato):
         except ValueError:
             print(f"Error: Por favor, ingresa un valor válido de tipo {tipo_dato.__name__}.")
 
-class Archivo:
+class Archivos:
     def __init__(self) -> None:
         pass
     def ingresar_paciente(self, dicom): #dicom es str
@@ -32,12 +32,13 @@ class Archivo:
         nifti_image = nib.load(nifti_file)
         image_array = nifti_image.get_fdata()
         return image_array
-class Paciente(Archivo):
+class Paciente(Archivos):
     def __init__(self):
         super().__init__()
         self.__nombre = ""
         self.__edad = 0
-        self.__ID = None
+        self.__ID = 0
+        self.__imagen = None
 
     def ver_nombre(self):
         return self.__nombre
