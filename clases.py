@@ -15,14 +15,25 @@ def validacion(mensaje, tipo_dato):
 class Archivos:
     def __init__(self) -> None:
         pass
-    def ingresar_paciente(self, dicom, nifti): #dicom es str
-        if dicom.endswith('.dcm'):
-            ds = pydicom.dcmread(dicom)
-            nombre = ds.PatientName
-            edad = ds.PatientAge
-            id = ds.PatientID
-            imagen = self.dicom_to_nifti(dicom, nifti)
+    def ingresar_paciente(self, carpeta_dicom, nifti):
+        if not os.path.isdir(carpeta_dicom):
+            print("La carpeta no existe.")
+            return None
+        lista_dicom = [os.path.join(carpeta_dicom, f) for f in os.listdir(carpeta_dicom) if f.endswith('.dcm')]
+        if not lista_dicom:
+            print("No se encontraron archivos DICOM en la carpeta.")
+            return None
+        try:
+            ds = pydicom.dcmread(lista_dicom[0])
+            nombre = ds.get("PatientName", None)
+            edad = ds.get("PatientAge", None)
+            id = ds.get("PatientID", None)
+            imagen = self.dicom_to_nifti(carpeta_dicom, nifti)
             return nombre, edad, id, imagen, ds
+        except FileNotFoundError:
+            print("Archivo DICOM no encontrado.")
+        except Exception as e:
+            print(f"Error al procesar archivos DICOM: {str(e)}")
             
     def dicom_to_nifti(self, dicom, nifti): #dicom y nifti son rutas
         if not os.path.exists(nifti):
