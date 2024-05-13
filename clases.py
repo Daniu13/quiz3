@@ -3,6 +3,8 @@ import pydicom
 import nibabel as nib
 import dicom2nifti
 import numpy as np
+import cv2
+import matplotlib.pyplot as plt
 
 def validacion(mensaje, tipo_dato):
     while True:
@@ -32,6 +34,19 @@ class Archivos:
         nifti_image = nib.load(nifti_file)
         image_array = nifti_image.get_fdata()
         return image_array
+
+    #Parte 2
+    def rotar_imagen(self, dicom, angulo):
+        imagen_dicom = cv2.imread(dicom, cv2.IMREAD_GRAYSCALE)
+        filas, columnas = np.shape(imagen_dicom)
+        center = (columnas/2, filas/2)
+        matriz_rot = cv2.getRotationMatrix2D(center, angulo, 1.0)
+        imagen_rotada = cv2.warpAffine(imagen_dicom, matriz_rot, (columnas, filas))
+        
+        return imagen_dicom, imagen_rotada
+
+    
+        
 class Paciente(Archivos):
     def __init__(self):
         super().__init__()
