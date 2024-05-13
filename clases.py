@@ -56,10 +56,17 @@ class Archivos:
         cv2.imwrite(ruta, imagen_rotada)
         print(f"Imagen guardada en: {ruta}")
 
+    def imagen_dict(self, ruta_img):
+        if os.path.exists(ruta_img):
+            img_cell = cv2.imread(ruta_img)
+            return img_cell, True
+        else:
+            print('El archivo no existe.')
+            return False
+
     def binarizar_transformar(self, archivo_imagen, umbral, tamano_kernel, ruta):
-        if os.path.exists(archivo_imagen): 
-            img_cell = cv2.imread(archivo_imagen)
-            img_cell = cv2.cvtColor(img_cell, cv2.COLOR_BGR2RGB)
+        if self.imagen_dict(archivo_imagen)[1]: 
+            img_cell = cv2.cvtColor(self.imagen_dict(archivo_imagen)[0], cv2.COLOR_BGR2RGB)
 
             img_cellR = img_cell[:,:,2]
             _, imgB = cv2.threshold(img_cellR, umbral, 255, cv2.THRESH_BINARY)

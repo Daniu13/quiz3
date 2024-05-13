@@ -31,7 +31,9 @@ def main():
             dict_pacientes[paciente.ver_ID] = paciente
             dict_archivos[paciente.ver_ID] = paciente.ingresar_paciente(dicom, nifti)[4]
         elif menu == 2:
-            break
+            archivo = Archivos()
+            img = validacion("Ingrese archivo JPG o PNG: ", str)
+            dict_archivos[img] = archivo.imagen_dict(img)[0]
         elif menu == 3:
             archivo = Archivos()
             archivo_dicom = validacion("Ingrese ruta del archivo Dicom: ", str)
@@ -55,7 +57,14 @@ def main():
                                      archivo.rotar_imagen(archivo_dicom, angulo)[1])
             archivo.guardar_imagen(ruta, archivo.rotar_imagen(archivo_dicom, angulo)[1])
         elif menu == 4:
-            break
+            archivo = Archivos()
+            clave = validacion("Ingrese clave del JPG o PNG (mismo nombre del archivo): ", str)
+            umbral = validacion("Valor del Umbral:", int)
+            tamano_kernel = validacion("Valor del tamaño del kernel:", int)
+            ruta_neu = validacion("Ingrese la ruta del nuevo archivo: ", str)
+            archivo.binarizar_transformar(clave, umbral, tamano_kernel, ruta_neu)
+            archivo.mostrar_imagenes(dict_archivos[clave],
+                                     archivo.binarizar_transformar(clave, umbral, tamano_kernel, ruta_neu))
         elif menu == 5:
             print("Saliendo del sistema.")
             break
