@@ -42,10 +42,21 @@ class Archivos:
         center = (columnas/2, filas/2)
         matriz_rot = cv2.getRotationMatrix2D(center, angulo, 1.0)
         imagen_rotada = cv2.warpAffine(imagen_dicom, matriz_rot, (columnas, filas))
-        
+
         return imagen_dicom, imagen_rotada
 
+    def mostrar_imagenes(self, imagen_dicom, imagen_rotada, titulo='Original', titulo_rot='Rotada'):
+        fig = plt.figure(figsize=(10, 5))
+        axes = fig.subplots(1, 2)
+        axes[0].imshow(imagen_dicom, cmap='gray')
+        axes[0].set_title(titulo)
+        axes[1].imshow(imagen_rotada, cmap='gray')
+        axes[1].set_title(titulo_rot)
+        plt.show()
     
+    def guardar_imagen(self, ruta, imagen_rotada):
+        cv2.imwrite(ruta, imagen_rotada)
+        print(f"Imagen guardada en: {ruta}")
         
 class Paciente(Archivos):
     def __init__(self):
