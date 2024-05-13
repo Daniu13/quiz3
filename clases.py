@@ -23,7 +23,7 @@ class Archivos:
             edad = ds.PatientAge
             id = ds.PatientID
             imagen = self.dicom_to_nifti(dicom)
-            return nombre, edad, id, imagen
+            return nombre, edad, id, imagen, ds
             
     def dicom_to_nifti(self, dicom):
         nifti_file = dicom.replace('.dcm', '.nii.gz')

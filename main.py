@@ -8,7 +8,6 @@ dict_pacientes = dict()
 dict_archivos = dict()
 
 def main():
-    paciente = Paciente()
     while True:
         menu = validacion(
             """\nIngrese una opción: 
@@ -21,12 +20,15 @@ def main():
             int
         )
         if menu == 1:
+            paciente = Paciente()
             dicom = validacion("Ingrese el archivo Dicom: ", str)
             paciente.ingresar_paciente(dicom)
             paciente.agregar_nombre(dicom)
             paciente.agregar_edad(dicom)
             paciente.agregar_ID(dicom)
             paciente.agregar_imagen(dicom)
+            dict_pacientes[paciente.ver_ID] = paciente
+            dict_archivos[paciente.ver_ID] = paciente.ingresar_paciente(dicom)[4]
         elif menu == 2:
             pass
         elif menu == 3:
