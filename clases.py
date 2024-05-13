@@ -1,9 +1,6 @@
-import os
-import pydicom
+import os, pydicom, cv2, dicom2nifti
 import nibabel as nib
-import dicom2nifti
 import numpy as np
-import cv2
 import matplotlib.pyplot as plt
 
 def validacion(mensaje, tipo_dato):
@@ -37,8 +34,8 @@ class Archivos:
         return image_array
 
     #Parte 2
-    def rotar_imagen(self, dicom, angulo):
-        imagen_dicom = cv2.imread(dicom, cv2.IMREAD_GRAYSCALE)
+    def rotar_imagen(self, archivo_dicom, angulo):
+        imagen_dicom = cv2.imread(archivo_dicom, cv2.IMREAD_GRAYSCALE)
         filas, columnas = np.shape(imagen_dicom)
         center = (columnas/2, filas/2)
         matriz_rot = cv2.getRotationMatrix2D(center, angulo, 1.0)
