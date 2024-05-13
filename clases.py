@@ -55,6 +55,26 @@ class Archivos:
     def guardar_imagen(self, ruta, imagen_rotada):
         cv2.imwrite(ruta, imagen_rotada)
         print(f"Imagen guardada en: {ruta}")
+
+    def binarizar_transformar(self, archivo_imagen, umbral, tamano_kernel, ruta):
+        if os.path.exists(archivo_imagen): 
+            img_cell = cv2.imread(archivo_imagen)
+            img_cell = cv2.cvtColor(img_cell, cv2.COLOR_BGR2RGB)
+
+            img_cellR = img_cell[:,:,2]
+            _, imgB = cv2.threshold(img_cellR, umbral, 255, cv2.THRESH_BINARY)
+            kernel = np.ones((tamano_kernel,tamano_kernel), np.uint8)
+            kernel1 = np.ones((tamano_kernel,tamano_kernel), np.uint8)
+            imaDil = cv2.dilate(imgB, kernel, iterations = 1)
+            imaEro = cv2.erode(imaDil,kernel1,iterations = 1)
+            texto = f"Imagen binarizada (umbral={umbral}, tamaño kernel={tamano_kernel})"
+            cv2.putText(imaEro, texto, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+            self.guardar_imagen(ruta, imaEro)
+            
+            return imaEro
+
+        else:
+            print('El archivo no existe.')
         
 class Paciente(Archivos):
     def __init__(self):
