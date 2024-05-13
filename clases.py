@@ -4,9 +4,14 @@ import nibabel as nib
 import dicom2nifti
 import numpy as np
 
-#DICCIONARIOS
-dict_pacientes = dict()
-dict_archivos = dict()
+def validacion(mensaje, tipo_dato):
+    while True:
+        entrada = input(mensaje)
+        try:
+            valor_validado = tipo_dato(entrada)
+            return valor_validado
+        except ValueError:
+            print(f"Error: Por favor, ingresa un valor válido de tipo {tipo_dato.__name__}.")
 
 class Archivo:
     def __init__(self) -> None:

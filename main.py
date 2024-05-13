@@ -1,14 +1,11 @@
 """Daniel Lozano Simanca
 Andrés Camilo Bastidas"""
 
-def validacion(mensaje, tipo_dato):
-    while True:
-        entrada = input(mensaje)
-        try:
-            valor_validado = tipo_dato(entrada)
-            return valor_validado
-        except ValueError:
-            print(f"Error: Por favor, ingresa un valor válido de tipo {tipo_dato.__name__}.")
+from clases import *
+
+#DICCIONARIOS
+dict_pacientes = dict()
+dict_archivos = dict()
 
 def main():
     while True:
