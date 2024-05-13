@@ -31,6 +31,8 @@ def main():
             dict_pacientes[paciente.ver_ID] = paciente
             dict_archivos[paciente.ver_ID] = paciente.ingresar_paciente(dicom, nifti)[4]
         elif menu == 2:
+            break
+        elif menu == 3:
             archivo = Archivos()
             archivo_dicom = validacion("Ingrese ruta del archivo Dicom: ", str)
             ruta = validacion("Ingrese ruta a guardar la imagen: ", str)
@@ -52,10 +54,8 @@ def main():
             archivo.mostrar_imagenes(archivo.rotar_imagen(archivo_dicom, angulo)[0],
                                      archivo.rotar_imagen(archivo_dicom, angulo)[1])
             archivo.guardar_imagen(ruta, archivo.rotar_imagen(archivo_dicom, angulo)[1])
-        elif menu == 3:
-            pass
         elif menu == 4:
-            pass
+            break
         elif menu == 5:
             print("Saliendo del sistema.")
             break
