@@ -46,7 +46,8 @@ class Archivos:
 
     #Parte 2
     def rotar_imagen(self, archivo_dicom, angulo):
-        imagen_dicom = cv2.imread(archivo_dicom, cv2.IMREAD_GRAYSCALE)
+        ds = pydicom.dcmread(archivo_dicom)
+        imagen_dicom = ds.pixel_array
         filas, columnas = np.shape(imagen_dicom)
         center = (columnas/2, filas/2)
         matriz_rot = cv2.getRotationMatrix2D(center, angulo, 1.0)
@@ -73,7 +74,7 @@ class Archivos:
             return img_cell, True
         else:
             print('El archivo no existe.')
-            return False
+            return None, False
 
     def binarizar_transformar(self, archivo_imagen, umbral, tamano_kernel, ruta):
         if self.imagen_dict(archivo_imagen)[1]: 
@@ -86,7 +87,7 @@ class Archivos:
             imaDil = cv2.dilate(imgB, kernel, iterations = 1)
             imaEro = cv2.erode(imaDil,kernel1,iterations = 1)
             texto = f"Imagen binarizada (umbral={umbral}, tamaño kernel={tamano_kernel})"
-            cv2.putText(imaEro, texto, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+            imaEro = cv2.putText(imaEro, texto, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
             self.guardar_imagen(ruta, imaEro)
             
             return imaEro
