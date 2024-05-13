@@ -18,19 +18,20 @@ def validacion(mensaje, tipo_dato):
 class Archivos:
     def __init__(self) -> None:
         pass
-    def ingresar_paciente(self, dicom): #dicom es str
+    def ingresar_paciente(self, dicom, nifti): #dicom es str
         if dicom.endswith('.dcm'):
             ds = pydicom.dcmread(dicom)
             nombre = ds.PatientName
             edad = ds.PatientAge
             id = ds.PatientID
-            imagen = self.dicom_to_nifti(dicom)
+            imagen = self.dicom_to_nifti(dicom, nifti)
             return nombre, edad, id, imagen, ds
             
-    def dicom_to_nifti(self, dicom):
-        nifti_file = dicom.replace('.dcm', '.nii.gz')
-        dicom2nifti.convert_dicom.dicom_array_to_nifti([dicom], nifti_file)
-
+    def dicom_to_nifti(self, dicom, nifti): #dicom y nifti son rutas
+        if not os.path.exists(nifti):
+            os.makedirs(nifti)
+        dicom2nifti.convert_directory(dicom, nifti)
+        nifti_file = os.path.join(nifti, os.listdir(nifti)[0])
         nifti_image = nib.load(nifti_file)
         image_array = nifti_image.get_fdata()
         return image_array
@@ -68,18 +69,18 @@ class Paciente(Archivos):
 
     def ver_nombre(self):
         return self.__nombre
-    def agregar_nombre(self, dicom):
-        self.__nombre = self.ingresar_paciente(dicom)[0]
+    def agregar_nombre(self, dicom, nifti):
+        self.__nombre = self.ingresar_paciente(dicom, nifti)[0]
     def ver_edad(self):
         return self.__edad
-    def agregar_edad(self, dicom):
-        self.__edad = self.ingresar_paciente(dicom)[1]
+    def agregar_edad(self, dicom, nifti):
+        self.__edad = self.ingresar_paciente(dicom, nifti)[1]
     def ver_ID(self):
         return self.__ID
-    def agregar_ID(self, dicom):
-        self.__ID = self.ingresar_paciente(dicom)[2]
+    def agregar_ID(self, dicom, nifti):
+        self.__ID = self.ingresar_paciente(dicom, nifti)[2]
     def ver_imagen(self):
         return self.__imagen
-    def agregar_imagen(self, dicom):
-        self.__imagen = self.ingresar_paciente(dicom)[3]
+    def agregar_imagen(self, dicom, nifti):
+        self.__imagen = self.ingresar_paciente(dicom, nifti)[3]
 
